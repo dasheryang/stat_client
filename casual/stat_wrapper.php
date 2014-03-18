@@ -18,6 +18,8 @@ class CasualStatWrapper{
 	}
 	
 	
+	
+	
 	private function _get_hash_key( $sys_id, $mod_id, $act_id ){
 		$date_str = "STAT_" . date( 'Ymd' );
 		$hash_key = "{$date_str}_{$sys_id}_{$mod_id}_{$act_id}";
