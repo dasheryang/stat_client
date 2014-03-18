@@ -10,7 +10,7 @@ class StatClient{
 		$this->_port = $port;
 	}
 	
-	public function send( $hash_key, $hash_entry, $inc_value ){
+	public function send( $hash_key, $hash_entry, $inc_value, $unique_tag = '', $unique_key = '' ){
 		$sock = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
 		
 		$message_buf_obj = new StatMessageProto();
@@ -18,6 +18,9 @@ class StatClient{
 		$message_buf_obj->set_hash_key( $hash_key );
 		$message_buf_obj->set_hash_entry( $hash_entry );
 		$message_buf_obj->set_hash_inc_value( $inc_value );
+		
+		$message_buf_obj->set_unique_tag( $unique_tag );
+		$message_buf_obj->set_unique_key( $unique_key );
 		
 		$buf_string = $message_buf_obj->SerializeToString();
 		
@@ -42,6 +45,12 @@ class StatMessageProto extends PBMessage
 		
 		$this->fields["3"] = "PBString";
 		$this->_set_value("3", '1.0');
+		
+		$this->fields["4"] = "PBString";
+		$this->_set_value("4", '');
+		
+		$this->fields["5"] = "PBString";
+		$this->_set_value("5", '');
 		return;
 	}
 	
@@ -57,4 +66,14 @@ class StatMessageProto extends PBMessage
 		$float_val = floatval( $value );
 		$this->_set_value("3", $float_val );
 	}
+	
+	public function set_unique_tag( $unique_tag ){
+		$this->_set_value("4", $unique_tag);
+	}
+	
+	public function set_unique_key( $unique_key ){
+		$this->_set_value("5", $unique_key );
+	}
+	
+	
 }
